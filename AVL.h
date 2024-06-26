@@ -28,7 +28,7 @@ private:
     Node* root;
 
 private:
-    long long getBF(Node* node);
+    long long getBF(Node* node) const;
     //bool isBalanced(Node* node);
 
     Node* rotateR(Node* node);
@@ -47,18 +47,26 @@ public:
     
     ~AVL();
 
-    size_t getHeight(Node* node);
+    size_t getHeight(Node* node) const;
 
     void clear();
 
     Node* insert(const T& val);
     Node* deleteNode(const T& val);
 
-    Node* search(const T& val);
+    Node* search(const T& val) const;
 
-    void printVal(Node* node) const;
+    Node* min(Node* node) const;
+    Node* max(Node* node) const;
+
+    Node* predecessor(Node* node) const;
+    Node* successor(Node* node) const;
 
     void printTree() const;
+
+    Node* getRoot() const;
+
+    static void printNode(Node* node);
 };
 
 #include "AVL.hpp"

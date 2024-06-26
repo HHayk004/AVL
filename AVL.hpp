@@ -38,7 +38,7 @@ template <typename T>
 AVL<T>::Node::Node(const T& val) : left(nullptr), right(nullptr), val(val){}
 
 template <typename T>
-size_t AVL<T>::getHeight(Node* node)
+size_t AVL<T>::getHeight(Node* node) const
 {
     if (!node)
     {
@@ -52,7 +52,7 @@ size_t AVL<T>::getHeight(Node* node)
 }
 
 template <typename T>
-long long AVL<T>::getBF(Node* node)
+long long AVL<T>::getBF(Node* node) const
 {
     return getHeight(node->left) - getHeight(node->right);
 }
@@ -247,8 +247,6 @@ typename AVL<T>::Node* AVL<T>::deleteRec(Node* node, const T& val)
         }
     }
 
-    //printTree();
-
     long long bf = getBF(node);
     if (bf > 1)
     {
@@ -280,7 +278,7 @@ typename AVL<T>::Node* AVL<T>::deleteRec(Node* node, const T& val)
 }
 
 template <typename T>
-typename AVL<T>::Node* AVL<T>::search(const T& val)
+typename AVL<T>::Node* AVL<T>::search(const T& val) const
 {
     Node* node = root;
     while (node && node->val != val)
@@ -300,9 +298,117 @@ typename AVL<T>::Node* AVL<T>::search(const T& val)
 }
 
 template <typename T>
-void AVL<T>::printVal(Node* node) const
+typename AVL<T>::Node* AVL<T>::min(Node* node) const
 {
-    std::cout << node->val << std::endl;
+    while (node->left)
+    {
+        node = node->left;
+    }
+
+    return node;
+}
+
+template <typename T>
+typename AVL<T>::Node* AVL<T>::max(Node* node) const
+{
+    while (node->right)
+    {
+        node = node->right;
+    }
+
+    return node;
+}
+
+template <typename T>
+typename AVL<T>::Node* AVL<T>::predecessor(Node* node) const
+{
+    Node* answer = nullptr;
+
+    if (node)
+    {
+        if (node->left)
+        {
+            answer = max(node->left);
+        }
+
+        else
+        {
+            Node* tmp = root;
+            while (tmp && tmp != node)
+            {
+                if (tmp->val < node->val)
+                {
+                    answer = tmp;
+                    tmp = tmp->right;
+                }
+
+                else
+                {
+                    tmp = tmp->left;
+                }
+            }
+
+            if (!tmp)
+            {
+                answer = nullptr;
+            }
+        }
+    }
+
+    return answer;
+}
+
+template <typename T>
+typename AVL<T>::Node* AVL<T>::successor(Node* node) const
+{
+    Node* answer = nullptr;
+
+    if (node)
+    {
+        if (node->right)
+        {
+            answer = min(root->right);
+        }
+
+        else
+        {
+            Node* tmp = root;
+            while (tmp && tmp != node)
+            {
+                if (tmp->val < node->val)
+                {
+                    tmp = tmp->right;
+                }
+
+                else
+                {
+                    answer = tmp;
+                    tmp = tmp->left;
+                }
+            }
+
+            if (!tmp)
+            {
+                answer = nullptr;
+            }
+        }
+    }
+
+    return answer;
+}
+
+template <typename T>
+typename AVL<T>::Node* AVL<T>::getRoot() const {
+    return root;
+}
+
+template <typename T>
+void AVL<T>::printNode(Node* node)
+{
+    if (node)
+    {
+        std::cout << node->val << std::endl;
+    }
 }
 
 template <typename T>
